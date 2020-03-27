@@ -5,7 +5,7 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: process.env.npm_package_name || '',
+    title: 'SPA Example with NUXT' || '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -23,6 +23,7 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    '@/assets/scss/style.scss'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -66,6 +67,6 @@ module.exports = {
    ** Server
    */
   server: {
-    port: 8000
+    port: 8880
   }
 }
