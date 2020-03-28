@@ -6,9 +6,9 @@
       </h1>
       <div class="btn-toolbar mb-2 mb-md-0">
         <div class="btn-group mr-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary">
-            Add
-          </button>
+          <nuxt-link to="/users/create" class="btn btn-sm btn-outline-secondary">
+            Create
+          </nuxt-link>
         </div>
       </div>
     </div>
@@ -23,7 +23,11 @@
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.id">
-            <td>{{ user.id }}</td>
+            <td>
+              <nuxt-link :to="{ name: 'users-id', params: { id: user.id }}">
+                {{ user.id }}
+              </nuxt-link>
+            </td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
           </tr>
@@ -37,15 +41,9 @@
 import Vue from 'vue'
 
 export default Vue.extend({
-  components: {
-
-  },
-  data () {
-    return {
-      users: [
-        { id: 1, name: 'Foo', email: 'foo@bar.com' }
-      ]
-    }
+  async asyncData ({ app }) {
+    const response = await app.$axios.$get('users')
+    return { users: response.data }
   }
 })
 </script>

@@ -10,33 +10,9 @@
         </li>
         <li class="nav-item">
           <nuxt-link to="/users" class="nav-link">
-            <span data-feather="file" />
+            <span data-feather="users" />
             Users
           </nuxt-link>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="shopping-cart" />
-            Products
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="users" />
-            Customers
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="bar-chart-2" />
-            Reports
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="layers" />
-            Integrations
-          </a>
         </li>
       </ul>
     </div>
@@ -49,7 +25,6 @@ const feather = require('feather-icons')
 
 export default Vue.extend({
   mounted () {
-    // `this` points to the vm instance
     feather.replace()
   }
 })

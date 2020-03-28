@@ -1,3 +1,4 @@
+require('dotenv').config()
 
 module.exports = {
   mode: 'spa',
@@ -34,7 +35,8 @@ module.exports = {
   ** Nuxt.js dev-modules
   */
   buildModules: [
-    '@nuxt/typescript-build'
+    '@nuxt/typescript-build',
+    '@nuxtjs/dotenv'
   ],
   /*
   ** Nuxt.js modules
@@ -52,6 +54,8 @@ module.exports = {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+    baseURL: process.env.API_URL,
+    headers: { Authorization: 'Bearer ' + process.env.API_ACCESS_TOKEN }
   },
   /*
   ** Build configuration
