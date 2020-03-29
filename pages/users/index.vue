@@ -1,25 +1,27 @@
 <template>
   <div>
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-1">
-      <h1 class="h2">
+    <div class="d-flex pa-2">
+      <h1>
         Users
       </h1>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group mr-2">
-          <nuxt-link to="/users/create" class="btn btn-sm btn-outline-secondary">
-            Create
-          </nuxt-link>
-        </div>
-      </div>
     </div>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
+
+    <v-simple-table>
+      <template v-slot:default>
         <thead>
           <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Job Title</th>
+            <th class="text-left">
+              #
+            </th>
+            <th class="text-left">
+              Name
+            </th>
+            <th class="text-left">
+              Email
+            </th>
+            <th class="text-left">
+              Job Title
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -34,8 +36,8 @@
             <td>{{ user.job_title }}</td>
           </tr>
         </tbody>
-      </table>
-    </div>
+      </template>
+    </v-simple-table>
   </div>
 </template>
 

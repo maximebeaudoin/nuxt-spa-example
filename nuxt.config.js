@@ -24,7 +24,6 @@ module.exports = {
   ** Global CSS
   */
   css: [
-    '@/assets/scss/style.scss'
   ],
   /*
   ** Plugins to load before mounting the App
@@ -43,11 +42,12 @@ module.exports = {
   */
   modules: [
     // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt',
+    // 'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     // Doc: https://github.com/nuxt-community/dotenv-module
-    '@nuxtjs/dotenv'
+    '@nuxtjs/dotenv',
+    '@nuxtjs/vuetify'
   ],
   /*
   ** Axios module configuration
@@ -72,5 +72,11 @@ module.exports = {
    */
   server: {
     port: 8880
+  },
+
+  // Doc: https://github.com/nuxt-community/vuetify-module
+  vuetify: {
+    customVariables: ['~/assets/scss/variables.scss'],
+    optionsPath: './vuetify.options.js'
   }
 }

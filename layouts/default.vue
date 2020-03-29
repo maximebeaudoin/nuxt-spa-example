@@ -1,26 +1,49 @@
 <template>
-  <div>
-    <Header />
-    <div class="container-fluid">
-      <div class="row">
-        <Sidebar />
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-          <nuxt />
-        </main>
-      </div>
-    </div>
-  </div>
+  <v-app dark>
+    <v-navigation-drawer v-model="drawer" fixed clipped app>
+      <v-list>
+        <v-list-item v-for="item in items" :key="item.text" link :to="{ name: item.link}" nuxt>
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ item.text }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar color="primary" dense fixed clipped-left app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="mr-5 align-center">
+        <span class="title">Nuxt SPA Example</span>
+      </v-toolbar-title>
+    </v-app-bar>
+    <v-content>
+      <Nuxt />
+    </v-content>
+  </v-app>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-import Header from '~/components/Header.vue'
-import Sidebar from '~/components/Sidebar.vue'
+<style scoped>
+</style>
 
-export default Vue.extend({
-  components: {
-    Header,
-    Sidebar
+<script>
+export default {
+  data () {
+    return {
+      drawer: true,
+      items: [
+        { icon: 'mdi-home', text: 'Home', link: 'index' },
+        { icon: 'mdi-fire', text: 'Users', link: 'users' }
+      ]
+    }
+  },
+  head () {
+    return {
+      title: 'Nuxt SPA Example'
+    }
   }
-})
+}
 </script>
