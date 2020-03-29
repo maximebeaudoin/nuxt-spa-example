@@ -22,10 +22,7 @@
                 <a target="_blank" href="#">{{ user.name }}</a>
               </div>
               <div class="desc">
-                {{ user.email }}
-              </div>
-              <div class="desc">
-                Tech geek
+                {{ user.job_title }}
               </div>
             </div>
             <div class="bottom">

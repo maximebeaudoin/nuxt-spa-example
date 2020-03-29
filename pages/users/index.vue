@@ -19,6 +19,7 @@
             <th>#</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Job Title</th>
           </tr>
         </thead>
         <tbody>
@@ -30,6 +31,7 @@
             </td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
+            <td>{{ user.job_title }}</td>
           </tr>
         </tbody>
       </table>
