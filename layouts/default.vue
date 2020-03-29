@@ -36,7 +36,7 @@ export default {
       drawer: true,
       items: [
         { icon: 'mdi-home', text: 'Home', link: 'index' },
-        { icon: 'mdi-fire', text: 'Users', link: 'users' }
+        { icon: 'mdi-account-multiple', text: 'Users', link: 'users' }
       ]
     }
   },

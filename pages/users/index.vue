@@ -11,9 +11,6 @@
         <thead>
           <tr>
             <th class="text-left">
-              #
-            </th>
-            <th class="text-left">
               Name
             </th>
             <th class="text-left">
@@ -26,11 +23,6 @@
         </thead>
         <tbody>
           <tr v-for="user in users" :key="user.id">
-            <td>
-              <nuxt-link :to="{ name: 'users-id', params: { id: user.id }}">
-                {{ user.id }}
-              </nuxt-link>
-            </td>
             <td>{{ user.name }}</td>
             <td>{{ user.email }}</td>
             <td>{{ user.job_title }}</td>
