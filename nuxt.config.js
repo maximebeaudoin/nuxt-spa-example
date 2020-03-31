@@ -55,7 +55,7 @@ module.exports = {
   */
   axios: {
     baseURL: process.env.API_URL,
-    headers: { Authorization: 'Bearer ' + process.env.API_ACCESS_TOKEN }
+    headers: { Authorization: 'Bearer ' + process.env.API_ACCESS_TOKEN, Accept: 'application/json' }
   },
   /*
   ** Build configuration

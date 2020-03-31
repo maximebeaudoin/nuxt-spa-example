@@ -118,17 +118,16 @@ export default Vue.extend({
     }
   },
   methods: {
-    save () {
-      console.log(this.editedUser)
-      this.dialog = false
-
-      /** const response = await this.$axios.$post('users', {
+    async save () {
+      const response = await this.$axios.$post('users', {
         name: this.editedUser.name,
         email: this.editedUser.email,
         job_title: this.editedUser.jobTitle,
         password: this.editedUser.password
 
-      })**/
+      })
+
+      this.dialog = false
     }
   }
 })
