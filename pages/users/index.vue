@@ -25,36 +25,50 @@
             </v-card-title>
 
             <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedUser.name" label="Name" />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedUser.email" label="Email" />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field v-model="editedUser.jobTitle" label="Job Title" />
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-model="editedUser.password"
-                      :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                      :type="passwordShow ? 'text' : 'password'"
-                      label="Password"
-                      hint="At least 8 characters"
-                      counter
-                      @click:append="passwordShow = !passwordShow"
-                    />
-                  </v-col>
-                </v-row>
-              </v-container>
+              <v-form
+                ref="form"
+                v-model="valid"
+                lazy-validation
+              >
+                <v-container>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-alert v-if="errorMessage" type="error">
+                        {{ errorMessage }}
+                      </v-alert>
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="createUserData.name" label="Name" :rules="[rules.required]" required />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="createUserData.email" label="Email" :rules="[rules.required, rules.email]" required />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field v-model="createUserData.job_title" label="Job Title" :rules="[rules.required]" required />
+                    </v-col>
+                  </v-row>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-text-field
+                        v-model="createUserData.password"
+                        :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="passwordShow ? 'text' : 'password'"
+                        label="Password"
+                        hint="At least 8 characters"
+                        :rules="[rules.required, rules.min]"
+                        counter
+                        @click:append="passwordShow = !passwordShow"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-form>
             </v-card-text>
 
             <v-card-actions>
@@ -84,15 +98,17 @@ import Vue from 'vue'
 interface User {
   name: string
   email: string,
-  jobTitle: string,
+  // eslint-disable-next-line camelcase
+  job_title: string,
   password: string
 }
 
+interface Validator { validate: () => boolean }
+
 export default Vue.extend({
   async asyncData ({ app }) {
+    // Get all users from the API
     const response = await app.$axios.$get('users')
-
-    // @todo add form validation
 
     return {
       headers: [
@@ -105,29 +121,67 @@ export default Vue.extend({
   },
   data () {
     return {
-      passwordShow: false,
-      dialog: false,
+      users: [] as Array<any>,
+      valid: true, // If the form is valid
+      passwordShow: false, // If we need to display the password in plain text
+      dialog: false, // If we need to open the dialog
+      errorMessage: '', // Default dialog error message
       search: '',
-      editedUser: {
+      createUserData: {
         name: '',
         email: '',
-        jobTitle: '',
+        job_title: '',
         password: ''
-      } as User
+      } as User,
+      rules: {
+        required: (value: string) => !!value || 'Required.',
+        email: (value: string) => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Invalid e-mail.'
+        },
+        min: (value: string) => value.length >= 8 || 'Min 8 characters'
+      }
 
     }
   },
   methods: {
+
+    // Save the user
     async save () {
-      const response = await this.$axios.$post('users', {
-        name: this.editedUser.name,
-        email: this.editedUser.email,
-        job_title: this.editedUser.jobTitle,
-        password: this.editedUser.password
+      // Define type for the form. We doing this because we want typescript to understand the validator.
+      const form = this.$refs.form as Vue & Validator
 
-      })
+      if (form.validate()) {
+        try {
+          // Send the request to create the user to the api
+          await this.$axios.$post('users', {
+            name: this.createUserData.name,
+            email: this.createUserData.email,
+            job_title: this.createUserData.job_title,
+            password: this.createUserData.password
+          })
 
-      this.dialog = false
+          // Add the user add the beginning of the users table list
+          this.users.unshift(this.createUserData)
+
+          // Close the form
+          this.dialog = false
+        } catch (error) {
+          // If we have a form validation error from the pia
+          if (error.response.status === 422) {
+            this.valid = false
+
+            const responseData = error.response.data.error
+
+            // For simplicity we only handle email error
+            if (responseData.message.email !== undefined) {
+              this.errorMessage = responseData.message.email[0]
+            } else {
+              this.errorMessage = "Something's wrong with your form"
+            }
+          }
+        }
+      }
     }
   }
 })
