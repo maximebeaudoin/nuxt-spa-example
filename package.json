@@ -19,7 +19,8 @@
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "feather-icons": "^4.26.0",
-    "nuxt": "^2.0.0"
+    "nuxt": "^2.0.0",
+    "nuxt-property-decorator": "^2.5.1"
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^0.6.0",
