@@ -1,5 +1,21 @@
 <template>
-  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Nuxt SPA example</a>
-  </nav>
+  <v-app-bar color="primary" dense fixed clipped-left app>
+    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-toolbar-title class="mr-5 align-center">
+      <span class="title">{{ title }}</span>
+    </v-toolbar-title>
+  </v-app-bar>
 </template>
+
+<style scoped>
+</style>
+
+<script>
+export default {
+  head () {
+    return {
+      title: 'Nuxt SPA Example'
+    }
+  }
+}
+</script>
