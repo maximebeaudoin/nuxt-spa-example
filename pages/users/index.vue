@@ -21,7 +21,7 @@
           </template>
           <v-card>
             <v-card-title>
-              <span class="headline">Create User</span>
+              <span class="headline">{{ formTitle }}</span>
             </v-card-title>
 
             <v-card-text>
@@ -40,23 +40,23 @@
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="createUserData.name" label="Name" :rules="[rules.required]" required />
+                      <v-text-field v-model="editedUserData.name" label="Name" :rules="[rules.required]" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="createUserData.email" label="Email" :rules="[rules.required, rules.email]" required />
+                      <v-text-field v-model="editedUserData.email" label="Email" :rules="[rules.required, rules.email]" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
-                      <v-text-field v-model="createUserData.job_title" label="Job Title" :rules="[rules.required]" required />
+                      <v-text-field v-model="editedUserData.job_title" label="Job Title" :rules="[rules.required]" required />
                     </v-col>
                   </v-row>
                   <v-row>
                     <v-col cols="12">
                       <v-text-field
-                        v-model="createUserData.password"
+                        v-model="editedUserData.password"
                         :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
                         :type="passwordShow ? 'text' : 'password'"
                         label="Password"
@@ -76,7 +76,7 @@
               <v-btn color="blue darken-1" text @click="dialog = false">
                 Cancel
               </v-btn>
-              <v-btn color="blue darken-1" text @click="save">
+              <v-btn color="blue darken-1" text @click="saveUser">
                 Save
               </v-btn>
             </v-card-actions>
@@ -87,7 +87,23 @@
         :headers="headers"
         :items="users"
         :search="search"
-      />
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon
+            small
+            class="mr-2"
+            @click="editUser(item)"
+          >
+            mdi-pencil
+          </v-icon>
+          <v-icon
+            small
+            @click="deleteUser(item)"
+          >
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
     </v-card>
   </div>
 </template>
@@ -121,13 +137,14 @@ export default Vue.extend({
   },
   data () {
     return {
+      editedUserIndex: -1,
       users: [] as Array<any>,
       valid: true, // If the form is valid
       passwordShow: false, // If we need to display the password in plain text
       dialog: false, // If we need to open the dialog
       errorMessage: '', // Default dialog error message
       search: '',
-      createUserData: {
+      editedUserData: {
         name: '',
         email: '',
         job_title: '',
@@ -144,25 +161,49 @@ export default Vue.extend({
 
     }
   },
+
+  computed: {
+    formTitle (): string {
+      return this.editedUserIndex === -1 ? 'Create User' : 'Edit User'
+    }
+  },
   methods: {
 
+    editUser (user: User) {
+      this.editedUserIndex = this.users.indexOf(user)
+      this.editedUserData = Object.assign({}, user)
+      this.dialog = true
+    },
+
+    deleteUser (user: User) {
+      const index = this.users.indexOf(user)
+      confirm('Are you sure you want to delete this user?') && this.users.splice(index, 1)
+    },
+
     // Save the user
-    async save () {
+    async saveUser () {
       // Define type for the form. We doing this because we want typescript to understand the validator.
       const form = this.$refs.form as Vue & Validator
 
       if (form.validate()) {
         try {
-          // Send the request to create the user to the api
-          await this.$axios.$post('users', {
-            name: this.createUserData.name,
-            email: this.createUserData.email,
-            job_title: this.createUserData.job_title,
-            password: this.createUserData.password
-          })
+          // Update user
+          if (this.editedUserIndex > -1) {
+            console.log('todo update user')
 
-          // Add the user add the beginning of the users table list
-          this.users.unshift(this.createUserData)
+            // Create user
+          } else {
+            // Send the request to create the user to the api
+            await this.$axios.$post('users', {
+              name: this.editedUserData.name,
+              email: this.editedUserData.email,
+              job_title: this.editedUserData.job_title,
+              password: this.editedUserData.password
+            })
+
+            // Add the user add the beginning of the users table list
+            this.users.unshift(this.editedUserData)
+          }
 
           // Close the form
           this.dialog = false
