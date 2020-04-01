@@ -65,6 +65,7 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapMutations } from 'vuex'
 import { User, Validator } from '~/types'
 
 export default Vue.extend({
@@ -93,7 +94,7 @@ export default Vue.extend({
   methods: {
 
     close () {
-      console.log('todo close dialog')
+      this.$store.commit('dialog/update', false)
     },
 
     // Save the user
@@ -110,6 +111,8 @@ export default Vue.extend({
             job_title: this.userData.job_title,
             password: this.userData.password
           })
+
+          this.close()
 
           // Add the user add the beginning of the users table list
           // this.users.unshift(this.userData)

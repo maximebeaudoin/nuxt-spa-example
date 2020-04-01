@@ -70,16 +70,21 @@ export default Vue.extend({
   },
   data () {
     return {
-      editedUserIndex: -1,
       users: [] as Array<any>,
-      dialog: false, // If we need to open the dialog
       search: ''
     }
   },
 
-  watch: {
-    dialog (val: boolean) {
-      val || this.close()
+  computed: {
+    dialog: {
+      // getter
+      get () : boolean {
+        return this.$store.state.dialog.open
+      },
+      // setter
+      set (dialog: boolean) {
+        this.$store.commit('dialog/update', dialog)
+      }
     }
   },
   methods: {
@@ -91,10 +96,6 @@ export default Vue.extend({
     deleteUser (user: User) {
       const index = this.users.indexOf(user)
       confirm('Are you sure you want to delete this user?') && this.users.splice(index, 1)
-    },
-
-    close () {
-      this.dialog = false
     }
   }
 })
