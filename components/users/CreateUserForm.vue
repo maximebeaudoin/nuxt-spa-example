@@ -112,6 +112,8 @@ export default Vue.extend({
             password: this.userData.password
           })
 
+          this.$emit('onSaveUser', this.userData)
+
           this.close()
 
           // Add the user add the beginning of the users table list

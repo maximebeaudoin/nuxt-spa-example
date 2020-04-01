@@ -22,7 +22,7 @@
               Create User
             </v-btn>
           </template>
-          <CreateUserForm />
+          <CreateUserForm @onSaveUser="onSaveUser" />
         </v-dialog>
       </v-toolbar>
     </template>
@@ -96,6 +96,10 @@ export default Vue.extend({
     deleteUser (user: User) {
       const index = this.users.indexOf(user)
       confirm('Are you sure you want to delete this user?') && this.users.splice(index, 1)
+    },
+
+    onSaveUser (user: User) {
+      this.users.unshift(user)
     }
   }
 })
