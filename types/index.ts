@@ -4,7 +4,7 @@ export interface User {
     email: string,
     // eslint-disable-next-line camelcase
     job_title: string,
-    password: string
+    password?: string
 }
 
 export interface Validator { validate: () => boolean }

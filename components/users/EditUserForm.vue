@@ -57,17 +57,14 @@ import { User, Validator } from '~/types'
 
 export default Vue.extend({
   props: {
-    dialog: Boolean
+    dialog: Boolean,
+    user: Object as () => User
   },
   data () {
     return {
       valid: true, // If the form is valid
       errorMessage: '', // Default dialog error message
-      userData: {
-        name: '',
-        email: '',
-        job_title: ''
-      } as User,
+      userData: this.user as User,
       rules: {
         required: (value: string) => !!value || 'Required.',
         email: (value: string) => {
@@ -91,10 +88,24 @@ export default Vue.extend({
       }
     }
   },
+  watch: {
+    user (user: User) {
+      this.userData = user
+    }
+  },
   methods: {
 
     close () {
       this.$emit('dialogWasClosed')
+      this.resetForm()
+    },
+
+    resetForm () {
+      this.userData = {
+        name: '',
+        email: '',
+        job_title: ''
+      }
     },
 
     // Save the user

@@ -17,7 +17,7 @@
         />
         <v-spacer />
         <CreateUserForm @userWasCreated="onUserWasCreated" />
-        <EditUserForm :dialog="editUserDialog" @userWasUpdated="onUserWasUpdated" @dialogWasClosed="onEditUserDialogClosed" />
+        <EditUserForm :dialog="editUserDialog" :user="userToEdit" @userWasUpdated="onUserWasUpdated" @dialogWasClosed="onEditUserDialogClosed" />
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
@@ -68,13 +68,21 @@ export default Vue.extend({
     return {
       users: [] as Array<any>,
       search: '',
-      editUserDialog: false
+      editUserDialog: false,
+      editUserIndex: -1,
+      userToEdit: {
+        name: '',
+        email: '',
+        job_title: ''
+      } as User
     }
   },
   methods: {
 
     editUser (user: User) {
+      this.editUserIndex = this.users.indexOf(user) // @todo find a better way to do this
       this.editUserDialog = true
+      this.userToEdit = Object.assign({}, user)
     },
 
     deleteUser (user: User) {
@@ -87,11 +95,22 @@ export default Vue.extend({
     },
 
     onUserWasUpdated (user: User) {
-      console.log('TODO update user in table')
+      Object.assign(this.users[this.editUserIndex], user)
+      this.resetEditUser()
     },
 
     onEditUserDialogClosed () {
       this.editUserDialog = false
+      this.resetEditUser()
+    },
+
+    resetEditUser () {
+      this.editUserIndex = -1
+      this.userToEdit = {
+        name: '',
+        email: '',
+        job_title: ''
+      }
     }
   }
 })
