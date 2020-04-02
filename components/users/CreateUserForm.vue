@@ -98,10 +98,26 @@ export default Vue.extend({
 
     }
   },
+  watch: {
+    dialog (val: boolean) {
+      if (!val) {
+        this.resetForm()
+      }
+    }
+  },
   methods: {
 
     close () {
-      this.dialog = false;
+      this.dialog = false
+    },
+
+    resetForm () {
+      this.userData = {
+        name: '',
+        email: '',
+        job_title: '',
+        password: ''
+      }
     },
 
     // Save the user
@@ -112,14 +128,14 @@ export default Vue.extend({
       if (form.validate()) {
         try {
           // Send the request to create the user to the api
-          await this.$axios.$post('users', {
+          const response = await this.$axios.$post('users', {
             name: this.userData.name,
             email: this.userData.email,
             job_title: this.userData.job_title,
             password: this.userData.password
           })
 
-          this.$emit('userWasCreated', this.userData)
+          this.$emit('userWasCreated', response.data)
 
           this.close()
 
