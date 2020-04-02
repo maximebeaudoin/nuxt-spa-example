@@ -16,14 +16,8 @@
           hide-details
         />
         <v-spacer />
-        <v-dialog v-model="dialog" max-width="500px">
-          <template v-slot:activator="{ on }">
-            <v-btn color="primary" dark class="mb-2" v-on="on">
-              Create User
-            </v-btn>
-          </template>
-          <CreateUserForm @onSaveUser="onSaveUser" />
-        </v-dialog>
+        <CreateUserForm @userWasCreated="onUserWasCreated" />
+        <EditUserForm :dialog="editUserDialog" @userWasUpdated="onUserWasUpdated" @dialogWasClosed="onEditUserDialogClosed" />
       </v-toolbar>
     </template>
     <template v-slot:item.actions="{ item }">
@@ -47,11 +41,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import CreateUserForm from '~/components/users/CreateUserForm.vue'
+import EditUserForm from '~/components/users/EditUserForm.vue'
 import { User } from '~/types'
 
 export default Vue.extend({
   components: {
-    CreateUserForm
+    CreateUserForm,
+    EditUserForm
   },
 
   async asyncData ({ app }) {
@@ -71,26 +67,14 @@ export default Vue.extend({
   data () {
     return {
       users: [] as Array<any>,
-      search: ''
-    }
-  },
-
-  computed: {
-    dialog: {
-      // getter
-      get () : boolean {
-        return this.$store.state.dialog.open
-      },
-      // setter
-      set (dialog: boolean) {
-        this.$store.commit('dialog/update', dialog)
-      }
+      search: '',
+      editUserDialog: false
     }
   },
   methods: {
 
     editUser (user: User) {
-      console.log('todo edit user' + user)
+      this.editUserDialog = true
     },
 
     deleteUser (user: User) {
@@ -98,8 +82,16 @@ export default Vue.extend({
       confirm('Are you sure you want to delete this user?') && this.users.splice(index, 1)
     },
 
-    onSaveUser (user: User) {
+    onUserWasCreated (user: User) {
       this.users.unshift(user)
+    },
+
+    onUserWasUpdated (user: User) {
+      console.log('TODO update user in table')
+    },
+
+    onEditUserDialogClosed () {
+      this.editUserDialog = false
     }
   }
 })

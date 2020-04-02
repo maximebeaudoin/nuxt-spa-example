@@ -1,13 +1,8 @@
 <template>
-  <v-dialog v-model="dialog" max-width="500px">
-    <template v-slot:activator="{ on }">
-      <v-btn color="primary" dark class="mb-2" v-on="on">
-        Create User
-      </v-btn>
-    </template>
+  <v-dialog v-model="dialogState" max-width="500px">
     <v-card>
       <v-card-title>
-        <span class="headline">Create User</span>
+        <span class="headline">Edit User</span>
       </v-card-title>
 
       <v-card-text>
@@ -39,20 +34,6 @@
                 <v-text-field v-model="userData.job_title" label="Job Title" :rules="[rules.required]" required />
               </v-col>
             </v-row>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="userData.password"
-                  :append-icon="passwordShow ? 'mdi-eye' : 'mdi-eye-off'"
-                  :type="passwordShow ? 'text' : 'password'"
-                  label="Password"
-                  hint="At least 8 characters"
-                  :rules="[rules.required, rules.min]"
-                  counter
-                  @click:append="passwordShow = !passwordShow"
-                />
-              </v-col>
-            </v-row>
           </v-container>
         </v-form>
       </v-card-text>
@@ -75,17 +56,17 @@ import Vue from 'vue'
 import { User, Validator } from '~/types'
 
 export default Vue.extend({
+  props: {
+    dialog: Boolean
+  },
   data () {
     return {
-      dialog: false,
       valid: true, // If the form is valid
-      passwordShow: false, // If we need to display the password in plain text
       errorMessage: '', // Default dialog error message
       userData: {
         name: '',
         email: '',
-        job_title: '',
-        password: ''
+        job_title: ''
       } as User,
       rules: {
         required: (value: string) => !!value || 'Required.',
@@ -98,10 +79,22 @@ export default Vue.extend({
 
     }
   },
+  computed: {
+    dialogState: {
+      get (): boolean {
+        return this.dialog
+      },
+      set (val: boolean) {
+        if (!val) {
+          this.close()
+        }
+      }
+    }
+  },
   methods: {
 
     close () {
-      this.dialog = false;
+      this.$emit('dialogWasClosed')
     },
 
     // Save the user
@@ -112,14 +105,13 @@ export default Vue.extend({
       if (form.validate()) {
         try {
           // Send the request to create the user to the api
-          await this.$axios.$post('users', {
+          await this.$axios.$patch('users/' + this.userData.id, {
             name: this.userData.name,
             email: this.userData.email,
-            job_title: this.userData.job_title,
-            password: this.userData.password
+            job_title: this.userData.job_title
           })
 
-          this.$emit('userWasCreated', this.userData)
+          this.$emit('userWasUpdated', this.userData)
 
           this.close()
 

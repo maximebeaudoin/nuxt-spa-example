@@ -1,4 +1,5 @@
 export interface User {
+    id?: number
     name: string
     email: string,
     // eslint-disable-next-line camelcase
