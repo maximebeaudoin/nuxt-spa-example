@@ -7,4 +7,7 @@ export interface User {
     password?: string
 }
 
-export interface Validator { validate: () => boolean }
+export interface Validator {
+    validate: () => boolean,
+    resetValidation: () => boolean
+}

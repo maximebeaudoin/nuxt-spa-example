@@ -118,6 +118,11 @@ export default Vue.extend({
         job_title: '',
         password: ''
       }
+
+      // Define type for the form. We doing this because we want typescript to understand the validator.
+      const form = this.$refs.form as Vue & Validator
+
+      form.resetValidation()
     },
 
     // Save the user
