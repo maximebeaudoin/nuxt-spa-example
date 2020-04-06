@@ -1,12 +1,18 @@
 <template>
   <div>
-    <v-app-bar color="primary" dense fixed clipped-left app>
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title class="mr-5 align-center">
-        <span class="title">Nuxt SPA Example</span>
-      </v-toolbar-title>
-    </v-app-bar>
-    <v-navigation-drawer v-model="drawer" fixed clipped app>
+    <v-navigation-drawer v-model="drawer" app>
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title class="title">
+            Nuxt
+          </v-list-item-title>
+          <v-list-item-subtitle>
+            Sample Application
+          </v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-divider></v-divider>
       <v-list>
         <v-list-item v-for="item in items" :key="item.text" link :to="{ name: item.link}" nuxt>
           <v-list-item-action>
@@ -20,6 +26,12 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <v-app-bar color="black" app>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <v-toolbar-title class="mr-5 align-center">
+        <span class="title">{{ title }}</span>
+      </v-toolbar-title>
+    </v-app-bar>
   </div>
 </template>
 
@@ -38,6 +50,9 @@ export default Vue.extend({
   computed: {
     items () {
       return this.$store.state.navigation.items
+    },
+    title () {
+      return this.$store.state.title
     }
   }
 })

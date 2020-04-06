@@ -6,8 +6,6 @@
   >
     <template v-slot:top>
       <v-toolbar flat>
-        <v-toolbar-title>Users</v-toolbar-title>
-        <v-spacer />
         <v-text-field
           v-model="search"
           append-icon="mdi-magnify"
@@ -76,6 +74,9 @@ export default Vue.extend({
         job_title: ''
       } as User
     }
+  },
+  mounted () {
+    this.$store.commit('updateTitle', 'Users')
   },
   methods: {
 

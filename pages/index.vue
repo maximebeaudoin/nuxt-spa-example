@@ -82,8 +82,10 @@
   }
 </style>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   data: () => ({
     labels: [
       '12am',
@@ -105,6 +107,9 @@ export default {
       250,
       240
     ]
-  })
-}
+  }),
+  mounted () {
+    this.$store.commit('updateTitle', 'Dashboard')
+  }
+})
 </script>
