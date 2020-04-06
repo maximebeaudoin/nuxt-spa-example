@@ -5,7 +5,7 @@
         <v-card>
           <v-sheet
             class="v-sheet--offset mx-auto"
-            color="teal lighten-3"
+            color="blue lighten-4"
             elevation="12"
             max-width="calc(100% - 32px)"
           >
@@ -40,7 +40,7 @@
         <v-card>
           <v-sheet
             class="v-sheet--offset mx-auto"
-            color="teal lighten-3"
+            color="blue lighten-4"
             elevation="12"
             max-width="calc(100% - 32px)"
           >
@@ -55,10 +55,10 @@
 
           <v-card-text class="pt-0">
             <div class="title font-weight-light mb-2">
-              User Registrations
+              Page Views
             </div>
             <div class="subheading font-weight-light grey--text">
-              Last Campaign Performance
+              Today page views
             </div>
             <v-divider class="my-2" />
             <v-icon
@@ -67,7 +67,7 @@
             >
               mdi-clock
             </v-icon>
-            <span class="caption grey--text font-weight-light">last registration 26 minutes ago</span>
+            <span class="caption grey--text font-weight-light">last update 4 minutes ago</span>
           </v-card-text>
         </v-card>
       </v-col>

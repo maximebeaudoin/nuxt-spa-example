@@ -71,7 +71,7 @@ module.exports = {
    ** Server
    */
   server: {
-    port: 8880
+    port: 8886
   },
 
   // Doc: https://github.com/nuxt-community/vuetify-module

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-navigation-drawer v-model="drawer" app>
+    <v-navigation-drawer v-model="drawer" color="primary" app dark>
       <v-list-item>
         <v-list-item-content>
           <v-list-item-title class="title">
@@ -26,7 +26,7 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar color="black" app>
+    <v-app-bar color="white" elevation="0" app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title class="mr-5 align-center">
         <span class="title">{{ title }}</span>
