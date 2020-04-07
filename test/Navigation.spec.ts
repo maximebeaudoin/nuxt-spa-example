@@ -11,7 +11,7 @@ const localVue = createLocalVue()
 localVue.use(Vuex)
 
 let mockStore: Store<State>
-let wrapper: Wrapper<Navigation>
+let wrapper: Wrapper<any>
 
 describe('Navigation', () => {
   beforeEach(() => {
@@ -33,5 +33,9 @@ describe('Navigation', () => {
 
   test('is a Vue instance', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()
+  })
+
+  test('the navigation is available', () => {
+    expect(wrapper.vm.items).toStrictEqual([{ icon: 'mdi-home', link: 'index', text: 'Dashboard' }])
   })
 })
