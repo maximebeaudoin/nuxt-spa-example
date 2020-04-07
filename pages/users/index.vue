@@ -86,9 +86,22 @@ export default Vue.extend({
       this.userToEdit = Object.assign({}, user)
     },
 
-    deleteUser (user: User) {
-      const index = this.users.indexOf(user)
-      confirm('Are you sure you want to delete this user?') && this.users.splice(index, 1)
+    async deleteUser (user: User) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        try {
+          // Send the request to create the user to the api
+          await this.$axios.$delete('users/' + user.id)
+
+          this.$emit('userWasDeleted', user)
+
+          this.users.splice(this.users.indexOf(user), 1)
+
+          // Add the user add the beginning of the users table list
+          // this.users.unshift(this.userData)
+        } catch (error) {
+          // todo do something
+        }
+      }
     },
 
     onUserWasCreated (user: User) {
