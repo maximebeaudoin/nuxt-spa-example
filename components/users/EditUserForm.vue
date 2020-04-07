@@ -58,7 +58,14 @@ import { User, Validator } from '~/types'
 export default Vue.extend({
   props: {
     dialog: Boolean,
-    user: Object as () => User
+    user: {
+      type: Object as () => User,
+      default: {
+        name: '',
+        email: '',
+        job_title: ''
+      }
+    }
   },
   data () {
     return {
@@ -130,7 +137,6 @@ export default Vue.extend({
 
           // Close the dialog
           this.close()
-
         } catch (error) {
           // If we have a form validation error from the pia
           if (error.response.status === 422) {

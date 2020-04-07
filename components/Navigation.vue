@@ -12,7 +12,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-divider></v-divider>
+      <v-divider />
       <v-list>
         <v-list-item v-for="item in items" :key="item.text" link :to="{ name: item.link}" nuxt>
           <v-list-item-action>

@@ -64,14 +64,14 @@ module.exports = {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend () {
     }
   },
   /*
    ** Server
    */
   server: {
-    port: 8886
+    port: 8880
   },
 
   // Doc: https://github.com/nuxt-community/vuetify-module
