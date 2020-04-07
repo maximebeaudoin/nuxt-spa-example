@@ -77,6 +77,9 @@ export default Vue.extend({
     }
   },
   computed: {
+
+    // The state of the dialog is deferred to the parent component
+    // because he's responsible of the user to edit
     dialogState: {
       get (): boolean {
         return this.dialog
@@ -95,6 +98,7 @@ export default Vue.extend({
   },
   methods: {
 
+    // Close the dialog
     close () {
       this.$emit('dialogWasClosed')
       this.resetForm()
@@ -124,10 +128,9 @@ export default Vue.extend({
 
           this.$emit('userWasUpdated', this.userData)
 
+          // Close the dialog
           this.close()
 
-          // Add the user add the beginning of the users table list
-          // this.users.unshift(this.userData)
         } catch (error) {
           // If we have a form validation error from the pia
           if (error.response.status === 422) {

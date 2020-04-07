@@ -100,6 +100,7 @@ export default Vue.extend({
   },
   watch: {
     dialog (val: boolean) {
+      // Reset the form when the dialog was closed
       if (!val) {
         this.resetForm()
       }
@@ -107,6 +108,7 @@ export default Vue.extend({
   },
   methods: {
 
+    // Close the dialog
     close () {
       this.dialog = false
     },
@@ -142,12 +144,10 @@ export default Vue.extend({
 
           this.$emit('userWasCreated', response.data)
 
+          // Close the form
           this.close()
-
-          // Add the user add the beginning of the users table list
-          // this.users.unshift(this.userData)
         } catch (error) {
-          // If we have a form validation error from the pia
+          // If we have a form validation error from the api
           if (error.response.status === 422) {
             this.valid = false
 
