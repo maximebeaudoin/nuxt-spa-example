@@ -27,6 +27,9 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package-lock.json" }}
       - run:
+          name: Run lint
+          command: npm run lint
+      - run:
           name: Run tests
           command: npm run test
       - persist_to_workspace:
